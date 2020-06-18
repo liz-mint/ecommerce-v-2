@@ -1,22 +1,48 @@
-import React, { useState } from 'react'
-import Head from './head'
-// import wave from '../assets/images/wave.jpg'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { getProducts, SortByPrice, SortByName } from '../redux/reducers/products'
+
+import Header from './header'
+import Cards from './cards'
+import Footer from './footer'
 
 const Home = () => {
-  const [counter, setCounterNew] = useState(0)
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(getProducts())
+    // dispatch(getRates())
+  }, [])
   return (
     <div>
-      <Head title="Hello" />
-      <img alt="wave" src="images/wave.jpg" />
-      <button type="button" onClick={() => setCounterNew(counter + 1)}>
-        updateCounter
-      </button>
-      <div> Hello World Dashboard {counter} </div>
+      <Header />
+      <div className="container mx-auto py-6 px-4">
+        <div>
+          <button
+            onClick={() => {
+              dispatch(SortByName())
+            }}
+            type="button"
+            className="border-none text-blue-500 hover:text-blue-800 mr-6"
+          >
+            A - Z
+          </button>
+          <button
+            onClick={() => {
+              dispatch(SortByPrice())
+            }}
+            type="button"
+            className="border-none text-blue-500 hover:text-blue-800 mr-6"
+          >
+            Price &#8595;
+          </button>
+        </div>
+        <Cards />
+      </div>
+      <Footer />
     </div>
   )
 }
-
-Home.propTypes = {}
 
 export default Home

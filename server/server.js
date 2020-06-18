@@ -5,10 +5,13 @@ import bodyParser from 'body-parser'
 import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
+import axios from 'axios'
 
 import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
+
+const data = require('./data')
 
 const Root = () => ''
 
@@ -40,6 +43,15 @@ const middleware = [
 ]
 
 middleware.forEach((it) => server.use(it))
+
+server.get('/api/v1/products', (req, res) => {
+  res.json(data.slice(0, 10))
+})
+
+server.get('/api/v1/rates', async (req, res) => {
+  const { data: rates } = await axios('https://api.exchangeratesapi.io/latest?symbols=USD,CAD')
+  res.json(rates)
+})
 
 server.use('/api/', (req, res) => {
   res.status(404)
