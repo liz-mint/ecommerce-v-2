@@ -45,7 +45,7 @@ const middleware = [
 middleware.forEach((it) => server.use(it))
 
 server.get('/api/v1/products', (req, res) => {
-  res.json(data.slice(0, 10))
+  res.json(data.slice(0, 50))
 })
 
 server.get('/api/v1/rates', async (req, res) => {
