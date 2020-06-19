@@ -7,7 +7,6 @@ import { getProducts, getRates, SortByPrice, SortByName } from '../redux/reducer
 import Header from './header'
 import Cards from './cards'
 import Footer from './footer'
-import './pagination.scss'
 
 const Home = () => {
   const dispatch = useDispatch()
