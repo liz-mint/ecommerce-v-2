@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { getProducts, SortByPrice, SortByName } from '../redux/reducers/products'
+import { getProducts, getRates, SortByPrice, SortByName } from '../redux/reducers/products'
 
 import Header from './header'
 import Cards from './cards'
@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getProducts())
-    // dispatch(getRates())
+    dispatch(getRates())
   }, [])
   return (
     <div>
@@ -24,7 +24,7 @@ const Home = () => {
               dispatch(SortByName())
             }}
             type="button"
-            className="border-none text-blue-500 hover:text-blue-800 mr-6"
+            className="border-none text-blue-500 hover:text-indigo-600 active:outline-none p-1 mr-6"
           >
             A - Z
           </button>
@@ -33,7 +33,7 @@ const Home = () => {
               dispatch(SortByPrice())
             }}
             type="button"
-            className="border-none text-blue-500 hover:text-blue-800 mr-6"
+            className="border-none text-blue-500 hover:text-blue-800 active:outline-none p-1 mr-6"
           >
             Price &#8595;
           </button>

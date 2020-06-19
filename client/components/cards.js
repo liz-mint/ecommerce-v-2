@@ -15,19 +15,19 @@ const Cards = () => {
       {list.map((product) => {
         return (
           <div className="w-1/4 px-2" key={product.title}>
-            <div className="card flex w-full max-w-sm flex-col items-center overflow-hidden border border-1 border-gray-600 mt-3 p-2 pb-4">
+            <div className="card flex w-full max-w-sm flex-col items-center overflow-hidden border border-1 border-gray-600 mt-3 p-3 pb-4">
               <img
                 className="card__image w-full h-64 object-cover object-center"
                 src={product.image}
                 alt={product.title}
               />
 
-              <div className="px-6 py-2">
-                <div className="card__title font-bold text-xl mb-2">
+              <div className="py-2">
+                <div className="card__title font-bold text-xl leading-none mb-2">
                   <a>{product.title}</a>
                 </div>
               </div>
-              <div className="px-6 py-2">
+              <div className="py-2">
                 <span className="card__price inline-block px-3 py-1 text-sm font-bold text-gray-700 mr-2">
                   {(product.price * rates[currency]).toFixed(2)}
                 </span>

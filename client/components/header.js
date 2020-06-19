@@ -8,7 +8,7 @@ import Head from './head'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { rates } = useSelector((s) => s.products)
+  const { rates, baseRate, totalCount, totalPrice } = useSelector((s) => s.products)
 
   return (
     <div>
@@ -29,7 +29,7 @@ const Header = () => {
                     dispatch(setBaseRate(currency))
                   }}
                   type="button"
-                  className="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white mr-4"
+                  className="block mt-4 lg:inline-block lg:mt-0 text-blue-200 hover:text-white active:text-white active:outline-none active:border-none p-1 mr-4"
                 >
                   {currency}
                 </button>
@@ -41,14 +41,14 @@ const Header = () => {
               <img src="images/cart.svg" className="block h-8 w-8 mr-6" alt="cart icon" />
             </Link>
 
-            {/* <div className="font-bold">
+            <div className="font-bold">
               <Link to="/basket" className="block">
                 <span id="order-count">{totalCount}</span> items
               </Link>
               <span>
                 {totalPrice} {baseRate}
               </span>
-            </div> */}
+            </div>
           </div>
         </div>
       </nav>
