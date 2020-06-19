@@ -67,7 +67,9 @@ const Cards = () => {
               </div>
 
               <div
-                className={`mx-auto ${typeof selected[product.id] === 'undefined' ? '' : 'hidden'}`}
+                className={`px-6 py-2 mx-auto ${
+                  typeof selected[product.id] === 'undefined' ? '' : 'hidden'
+                }`}
               >
                 <button
                   onClick={() => {
