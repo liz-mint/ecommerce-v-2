@@ -9,7 +9,7 @@ import store, { history } from '../redux'
 
 import Home from '../components/home'
 import Cart from '../components/cart'
-// import Logs from '../components/logs'
+import Logs from '../components/logs'
 import NotFound from '../components/404'
 
 import Startup from './startup'
@@ -73,9 +73,9 @@ const RootComponent = (props) => {
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
-            <Route path="/" component={() => <Home />} />
-            <Route exact path="/basket" component={() => <Cart />} />
-            {/* <Route exact path="/logs" component={() => <Logs />} /> */}
+            <Route exact path="/" component={() => <Home />} />
+            <Route path="/basket" component={() => <Cart />} />
+            <Route path="/logs" component={() => <Logs />} />
             <PrivateRoute exact path="/hidden-route" component={() => <Home />} />
             <Route component={() => <NotFound />} />
           </Switch>

@@ -11,6 +11,8 @@ import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
 
+const { readFile, writeFile, unlink } = require('fs').promises
+
 const data = require('./data')
 
 const Root = () => ''
@@ -45,12 +47,49 @@ const middleware = [
 middleware.forEach((it) => server.use(it))
 
 server.get('/api/v1/products', (req, res) => {
-  res.json(data.slice(0, 50))
+  const { sort = 'default' } = req.query
+  const perPage = +req.query.perPage
+  const page = +req.query.page
+
+  function sortedProducts(arr, sortType) {
+    switch (sortType) {
+      case 'price':
+        return arr.sort((a, b) => b.price - a.price)
+      case 'name':
+        return arr.sort((a, b) => {
+          if (a.title > b.title) return 1
+          if (a.title < b.title) return -1
+          return 0
+        })
+      default:
+        return arr
+    }
+  }
+  const products = sortedProducts(data, sort).slice(page * perPage - perPage, page * perPage)
+  const pages = Math.ceil(data.length / perPage)
+  res.json({ pages, list: products })
 })
 
 server.get('/api/v1/rates', async (req, res) => {
   const { data: rates } = await axios('https://api.exchangeratesapi.io/latest?symbols=USD,CAD')
   res.json(rates)
+})
+
+server.post('/api/v1/logs', async (req, res) => {
+  const logs = await readFile(`${__dirname}/logs.json`, { encoding: 'utf8' })
+    .then((text) => JSON.parse(text))
+    .catch(() => {
+      return []
+    })
+  await writeFile(`${__dirname}/logs.json`, JSON.stringify([...logs, req.body]), {
+    encoding: 'utf8'
+  })
+  res.json(req.body)
+})
+
+server.delete('/api/v1/logs', async (req, res) => {
+  await unlink(`${__dirname}/logs.json`)
+  res.json({ status: 'ok' })
 })
 
 server.use('/api/', (req, res) => {

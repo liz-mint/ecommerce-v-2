@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactPaginate from 'react-paginate'
 
-import { getProducts, getRates, SortByPrice, SortByName } from '../redux/reducers/products'
+import { getProducts, getRates } from '../redux/reducers/products'
 
 import Header from './header'
 import Cards from './cards'
@@ -10,42 +10,39 @@ import Footer from './footer'
 
 const Home = () => {
   const dispatch = useDispatch()
-  const list = useSelector((s) => s.products.list)
+  const pagesCount = useSelector((s) => s.products.pagesCount)
 
-  const [pagunationParams, setPagunationParams] = useState({
-    offset: 0,
-    currentPage: 1,
+  const [paginationParams, setPaginationParams] = useState({
+    page: 1,
     perPage: 12,
-    pageCount: Math.ceil(list.length / 12)
+    sort: 'default'
   })
 
   const PageClickHandler = (e) => {
-    const selectedPage = e.selected
-    const offset = selectedPage * pagunationParams.perPage
+    setPaginationParams({ ...paginationParams, page: e.selected + 1 })
+  }
 
-    setPagunationParams({ ...pagunationParams, currentPage: selectedPage - 1, offset })
+  const changeSortType = (type) => {
+    setPaginationParams({ ...paginationParams, sort: type })
   }
 
   useEffect(() => {
-    dispatch(getProducts())
     dispatch(getRates())
   }, [])
 
   useEffect(() => {
-    setPagunationParams({
-      ...pagunationParams,
-      pageCount: Math.ceil(list.length / pagunationParams.perPage)
-    })
-  }, [list.length])
+    dispatch(getProducts(paginationParams))
+  }, [paginationParams])
 
   return (
     <div>
       <Header />
+      {JSON.stringify(paginationParams)}
       <div className="container mx-auto py-6 px-4">
         <div>
           <button
             onClick={() => {
-              dispatch(SortByName())
+              changeSortType('name')
             }}
             type="button"
             className="border-none text-blue-500 hover:text-indigo-600 active:outline-none p-1 mr-6"
@@ -54,7 +51,7 @@ const Home = () => {
           </button>
           <button
             onClick={() => {
-              dispatch(SortByPrice())
+              changeSortType('price')
             }}
             type="button"
             className="border-none text-blue-500 hover:text-blue-800 active:outline-none p-1 mr-6"
@@ -62,14 +59,14 @@ const Home = () => {
             Price &#8595;
           </button>
         </div>
-        <Cards pagunationParams={pagunationParams} />
+        <Cards />
 
         <ReactPaginate
           previousLabel="prev"
           nextLabel="next"
           breakLabel="..."
           breakClassName="break-me"
-          pageCount={pagunationParams.pageCount}
+          pageCount={pagesCount}
           marginPagesDisplayed={2}
           pageRangeDisplayed={2}
           onPageChange={PageClickHandler}
