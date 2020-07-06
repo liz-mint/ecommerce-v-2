@@ -1,4 +1,5 @@
 import express from 'express'
+import mongoose from 'mongoose'
 import path from 'path'
 import cors from 'cors'
 import bodyParser from 'body-parser'
@@ -8,6 +9,7 @@ import React from 'react'
 import axios from 'axios'
 
 import cookieParser from 'cookie-parser'
+import Products from './model/Product.model'
 import config from './config'
 import Html from '../client/html'
 
@@ -35,6 +37,11 @@ let connections = []
 
 const port = process.env.PORT || 8090
 const server = express()
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
 
 const middleware = [
   cors(),
@@ -68,6 +75,12 @@ server.get('/api/v1/products', (req, res) => {
   const products = sortedProducts(data, sort).slice(page * perPage - perPage, page * perPage)
   const pages = Math.ceil(data.length / perPage)
   res.json({ pages, list: products })
+})
+
+server.get('/api/v2/products', async (req, res) => {
+  const products = await Products.find({}).exec().then(console.log)
+  console.log(products)
+  res.json(products)
 })
 
 server.get('/api/v1/rates', async (req, res) => {
