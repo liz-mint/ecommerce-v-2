@@ -38,7 +38,7 @@ let connections = []
 const port = process.env.PORT || 8090
 const server = express()
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(config.mongoURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -81,10 +81,31 @@ server.get('/api/v2/products', async (req, res) => {
   const { page = 1, perPage = 12, sort = 'default' } = req.query
 
   try {
-    const products = await Products.find({})
-      .limit(perPage * 1)
-      .skip((page - 1) * perPage)
-      .exec()
+    let products
+    switch (sort) {
+      case 'price': {
+        products = await Products.find({})
+          .sort({ price: -1 })
+          .limit(perPage * 1)
+          .skip((page - 1) * perPage)
+          .exec()
+        break
+      }
+      case 'name': {
+        products = await Products.find({})
+          .sort({ title: 1 })
+          .limit(perPage * 1)
+          .skip((page - 1) * perPage)
+          .exec()
+        break
+      }
+      default:
+        products = await Products.find({})
+          .limit(perPage * 1)
+          .skip((page - 1) * perPage)
+          .exec()
+        break
+    }
 
     const count = await Products.countDocuments()
     res.json({ list: products, pages: Math.ceil(count / +perPage) })
