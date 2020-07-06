@@ -8,7 +8,6 @@ import Footer from './footer'
 const Cart = () => {
   return (
     <div>
-      cart
       <Header />
       <div className="container mx-auto py-6 px-12">
         <CartItems />

@@ -56,7 +56,7 @@ const CartItems = () => {
                         <div className="flex-shrink-0 h-10 w-10">
                           <img
                             className="product__image h-10 w-10"
-                            src={items[id].img}
+                            src={items[id].image}
                             alt={items[id].title}
                           />
                         </div>

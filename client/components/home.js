@@ -37,7 +37,6 @@ const Home = () => {
   return (
     <div>
       <Header />
-      {JSON.stringify(paginationParams)}
       <div className="container mx-auto py-6 px-4">
         <div>
           <button
