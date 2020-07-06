@@ -32,7 +32,8 @@ export default (state = initialState, action) => {
           [action.id]: {
             count: amount + 1,
             title: action.title,
-            price: action.price
+            price: action.price,
+            image: action.image
           }
         },
         totalCount: state.totalCount + 1,
@@ -111,8 +112,8 @@ export function getCountOfProducts() {
   }
 }
 
-export function addSelection({ id, title, price }) {
-  return { type: ADD_TO_SELECTION, id, title, price }
+export function addSelection({ id, title, price, image }) {
+  return { type: ADD_TO_SELECTION, id, title, price, image }
 }
 
 export function removeSelection(id) {

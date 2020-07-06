@@ -1,5 +1,3 @@
-# SkillCrucial React Redux boilerplate
-
 ## Quick start
 
 1. Clone this repo using:
@@ -93,33 +91,6 @@ yarn build:prod
 ```
 
 Prepares your app for deployment to production environment (using the webpack.production.frontend.config.js) (does not run tests). Optimizes and minifies all files, piping them to the `dist` folder.
-
-
-#### Testing
-
-```Shell
-yarn run test
-```
-
-Tests your application modern JavaScript Testing Framework - Jest with the unit tests specified in the `**/__tests__/*.spec.js` files
-throughout the application.
-
-```Shell
-yarn run test:watch
-```
-
-Watches changes to your application and re-runs tests whenever a file changes.
-
-```Shell
-yarn run coverage
-```
-
-Generates test coverage.
-
-
-It’s also possible to leave out the run in this command, each script can be executed with its name, e.g:
-yarn test:watch
-yarn test:coverage
 
 #### Linting
 

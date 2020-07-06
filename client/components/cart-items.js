@@ -1,17 +1,13 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { addSelection, removeSelection, calcTotalPriceAndCounts } from '../redux/reducers/products'
+import { addSelection, removeSelection } from '../redux/reducers/products'
 
 const CartItems = () => {
   const dispatch = useDispatch()
-  const { list, baseRate: currency, rates, selected: items, totalPrice, totalCount } = useSelector(
+  const { baseRate: currency, rates, selected: items, totalPrice, totalCount } = useSelector(
     (s) => s.products
   )
-
-  const getInfo = (field, id) => {
-    return list.find((item) => item.id === id)[field]
-  }
 
   return (
     <div className="flex flex-col">
@@ -52,7 +48,7 @@ const CartItems = () => {
 
             <tbody className="bg-white">
               {Object.keys(items).map((id) => {
-                const price = (getInfo('price', id) * rates[currency]).toFixed(2)
+                const price = (items[id].price * rates[currency]).toFixed(2)
                 return (
                   <tr key={id}>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -60,13 +56,13 @@ const CartItems = () => {
                         <div className="flex-shrink-0 h-10 w-10">
                           <img
                             className="product__image h-10 w-10"
-                            src={getInfo('image', id)}
-                            alt={getInfo('title', id)}
+                            src={items[id].img}
+                            alt={items[id].title}
                           />
                         </div>
                         <div className="ml-4">
                           <div className="product__title text-sm leading-5 font-medium text-gray-500">
-                            {getInfo('title', id)}
+                            {items[id].title}
                           </div>
                         </div>
                       </div>
@@ -81,7 +77,6 @@ const CartItems = () => {
                         <button
                           onClick={() => {
                             dispatch(removeSelection(id))
-                            dispatch(calcTotalPriceAndCounts())
                           }}
                           className="product__remove border border-black px-3"
                           type="button"
@@ -89,12 +84,11 @@ const CartItems = () => {
                           -
                         </button>
 
-                        <div className="card__product-amount px-3 mx-3">{items[id]}</div>
+                        <div className="card__product-amount px-3 mx-3">{items[id].count}</div>
 
                         <button
                           onClick={() => {
                             dispatch(addSelection(id))
-                            dispatch(calcTotalPriceAndCounts())
                           }}
                           className="border border-black px-3"
                           type="button"
@@ -104,7 +98,7 @@ const CartItems = () => {
                       </div>
                     </td>
                     <td className="product__total_price px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-900">
-                      {price * items[id]} {currency}
+                      {price * items[id].count} {currency}
                     </td>
                   </tr>
                 )
