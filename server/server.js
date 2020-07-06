@@ -78,9 +78,19 @@ server.get('/api/v1/products', (req, res) => {
 })
 
 server.get('/api/v2/products', async (req, res) => {
-  const products = await Products.find({}).exec().then(console.log)
-  console.log(products)
-  res.json(products)
+  const { page = 1, perPage = 12, sort = 'default' } = req.query
+
+  try {
+    const products = await Products.find({})
+      .limit(perPage * 1)
+      .skip((page - 1) * perPage)
+      .exec()
+
+    const count = await Products.countDocuments()
+    res.json({ list: products, pages: Math.ceil(count / +perPage) })
+  } catch (err) {
+    console.error(err.message)
+  }
 })
 
 server.get('/api/v1/rates', async (req, res) => {

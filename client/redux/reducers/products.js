@@ -96,7 +96,7 @@ export default (state = initialState, action) => {
 
 export function getProducts(params) {
   return (dispatch) => {
-    fetch(`/api/v1/products?${new URLSearchParams(params)}`)
+    fetch(`/api/v2/products?${new URLSearchParams(params)}`)
       .then((res) => res.json())
       .then(({ list, pages }) => dispatch({ type: GET_PRODUCTS, list, pages }))
       .catch(() => console.log('products fail'))
