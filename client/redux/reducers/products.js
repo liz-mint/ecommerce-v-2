@@ -62,16 +62,6 @@ export default (state = initialState, action) => {
       return { ...state, baseRate: action.baseRate }
     case GET_PRODUCTS_COUNT:
       return { ...state, productCount: action.count }
-    case CALC_TOTAL_PRICE_COUNTS: {
-      const getPrice = (id) => {
-        return state.list.find((item) => item.id === id).price
-      }
-      const totalCount = Object.values(state.selected).reduce((total, count) => total + count, 0)
-      const totalPrice = Object.keys(state.selected).reduce((sum, id) => {
-        return sum + state.selected[id] * (getPrice(id) * state.rates[state.baseRate]).toFixed(2)
-      }, 0)
-      return { ...state, totalPrice, totalCount }
-    }
     default:
       return state
   }
