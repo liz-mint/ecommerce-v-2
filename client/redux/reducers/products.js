@@ -14,9 +14,6 @@ const GET_PRODUCTS_COUNT = 'GET_PRODUCTS_COUNT'
 const SET_BASE_RATE = 'SET_BASE_RATE'
 const ADD_TO_SELECTION = 'ADD_TO_SELECTION'
 const REMOVE_FROM_SELECTION = 'REMOVE_FROM_SELECTION'
-const SORT_BY_PRICE = 'SORT_BY_PRICE'
-const SORT_BY_NAME = 'SORT_BY_NAME'
-const CALC_TOTAL_PRICE_COUNTS = '@@CALC_TOTAL_PRICE_COUNTS'
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -75,20 +72,6 @@ export default (state = initialState, action) => {
       }, 0)
       return { ...state, totalPrice, totalCount }
     }
-    case SORT_BY_PRICE:
-      return { ...state, list: [...state.list.sort((a, b) => b.price - a.price)] }
-    case SORT_BY_NAME: {
-      const sortFunc = (a, b) => {
-        if (a.title > b.title) return 1
-        if (a.title < b.title) return -1
-        return 0
-      }
-      return {
-        ...state,
-        list: [...state.list.sort(sortFunc)]
-      }
-    }
-
     default:
       return state
   }
@@ -96,7 +79,7 @@ export default (state = initialState, action) => {
 
 export function getProducts(params) {
   return (dispatch) => {
-    fetch(`/api/v2/products?${new URLSearchParams(params)}`)
+    fetch(`/api/v1/products?${new URLSearchParams(params)}`)
       .then((res) => res.json())
       .then(({ list, pages }) => dispatch({ type: GET_PRODUCTS, list, pages }))
       .catch(() => console.log('products fail'))
@@ -127,10 +110,6 @@ export function getRates() {
       .then((rates) => dispatch({ type: GET_RATES, exchanges: rates }))
       .catch(() => console.log('get rates fail'))
   }
-}
-
-export function calcTotalPriceAndCounts() {
-  return { type: CALC_TOTAL_PRICE_COUNTS }
 }
 
 export function setBaseRate(newBase) {
